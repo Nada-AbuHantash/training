@@ -7,7 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content=
               "width=device-width, initial-scale=1.0">
-    <title>upload file</title>
+    <title>delete file</title>
+
+   
 </head>
 <body>
   
@@ -17,13 +19,13 @@
           
        <a class="arow" href="/api/users/home"  >&larr;</a>
 
-    <form class="login-form" action="/api/upload" method="post" enctype="multipart/form-data">
-        <input type="file" placeholder="Choose file" name="file">
-        <button type="submit">upload</button>
-        <h1><%= msg.text %></h1>
+    <form class="login-form" action="/api/files/:filename" method="delete" >
+        <input type="text" placeholder="search by name" name="filename">
+        <button type="submit">delete</button>
+        <p class="p"><%= msg.text %></p>
     </form>
     </div>
     </div>
-    
+   
 </body>
 </html>

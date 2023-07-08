@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const multer = require('multer');
+// const multer = require('multer');
 
 const fileSchema = new mongoose.Schema({
     originalname: {
@@ -37,20 +37,5 @@ const fileSchema = new mongoose.Schema({
 const File = mongoose.model('File', fileSchema);
 
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        const uniqueName = `${Date.now()}-${file.originalname}`;
-      
-        cb(null, uniqueName);
-    }
-});
 
-const upload = multer({ storage });
-
-// exports.validateFile = validateFile;
 exports.File = File;
-// exports.storage = storage;
-exports.upload = upload;

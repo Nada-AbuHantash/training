@@ -7,23 +7,21 @@ const router = express.Router();
 
 let msg = {
     text: '',
-    status: 0
-
-};
+   };
 router.get('/', async (_, resp) => {
     msg.status = 0;
-    msg.text = '';
+   
     resp.render('login', { msg });
 });
 
 
 router.post('/', async (req, res, resp) => {
-
+  
     console.log(req.body.email);
     let user = await User.findOne({ email: req.body.email })
     if (!user) {
         msg.text = 'invalied email';
-        msg.status = 400;
+    
         return res.render('login', { msg });
     }
     //    return res.status(400).send('invalied email ');
@@ -31,7 +29,7 @@ router.post('/', async (req, res, resp) => {
     const isValid = await brcypt.compare(req.body.password, user.password);
     if (!isValid) {
         msg.text = 'invalied  password';
-        msg.status = 400;
+    
         return res.render('login', { msg });
     }
     // return res.status(400).send('invalied  password');
@@ -39,7 +37,10 @@ router.post('/', async (req, res, resp) => {
     return res.render('home');
 
 });
+router.get('/home',async (req, resp) => {
+    resp.render('home');
 
+});
 // router.post('/', async (req, res) => {
 
 //     const { error } = validate(req.body);
