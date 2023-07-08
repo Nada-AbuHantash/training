@@ -22,13 +22,13 @@
     <form class="login-form" action="/api/files/:filename" method="get" >
         <input type="text" placeholder="search by name" name="filename">
         <button type="submit">search</button>
-        
     </form>
-    <form class="login-form" action="/api/files/:<%= filename %>?_method=DELETE" method="post" >
-        <input type="text" placeholder="search by name" name="filename">
-        <button type="submit">delete</button>
-        <p class="p"><%= msg.text %></p>
-    </form>
+        <form class="login-form" action="/api/files/delete/:filename" method="get">
+            <input type="text" placeholder="search by name" name="filename">
+            <button type="submit">delete</button>
+            <p class="p"><%= msg.text %></p>
+      
+        </form>
     </div>
     </div>
     

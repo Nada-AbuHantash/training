@@ -9,7 +9,7 @@ let msg = {
 };
 
 router.get('/', async (_, resp) => {
-  msg.status = 0;
+  msg.text = '';
 
   resp.render('upload', { msg });
 });
@@ -21,7 +21,6 @@ router.post('/', upload.single('file'), async (req, res, resp) => {
   if (!req.file) {
     msg.text = 'No file uploaded';
 
-    // return res.status(400).send({ error: 'No file uploaded' });
     return res.render('upload', { msg });
 
   }
@@ -30,21 +29,20 @@ router.post('/', upload.single('file'), async (req, res, resp) => {
     msg.text = 'File size exceeds the limit';
 
     return res.render('upload', { msg });
-    // return res.status(400).send({ error: 'File size exceeds the limit' });
+    
   }
   if (!req.file.mimetype.startsWith('text/') && req.file.mimetype !== 'application/pdf') {
     msg.text = 'Invalid file type';
 
     return res.render('upload', { msg });
-    // return res.status(400).send({ error: 'Invalid file type' });
+   
   }
 
   const { filename, mimetype, size } = req.file;
 
   uniqueName = filename;
+  
   const filePath = path.join('C:\\Users\\anas1\\vscode-nodejs\\Task#1\\uploads', filename);
-
-
 
   const file = new File({
     originalname: req.file.originalname,

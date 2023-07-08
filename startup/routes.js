@@ -4,11 +4,10 @@ const upload = require('../routes/upload');
 const files = require('../routes/files');
 const error = require('../middleware/error');
 const bodyParser = require('body-parser');
-const methodOverride = require('method-override');
+
 
 module.exports = function (app) {
     // app.use(express.json());
-    app.use(methodOverride('_method'));
     app.use(bodyParser.urlencoded({ extended: true }));
     app.set("view engine", "ejs");
     app.use(express.static("public"));
