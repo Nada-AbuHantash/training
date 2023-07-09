@@ -24,7 +24,7 @@ router.post('/', async (req, res, resp) => {
     
         return res.render('login', { msg });
     }
-    //    return res.status(400).send('invalied email ');
+ 
 
     const isValid = await brcypt.compare(req.body.password, user.password);
     if (!isValid) {
@@ -32,9 +32,9 @@ router.post('/', async (req, res, resp) => {
     
         return res.render('login', { msg });
     }
-    // return res.status(400).send('invalied  password');
-
-    return res.render('home');
+    
+    const token = user.generateAuthToken();
+    return res.header('x-auth-token',token).render('home');
 
 });
 router.get('/home',async (req, resp) => {

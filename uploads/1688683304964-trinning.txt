@@ -1,5 +1,0 @@
-sunday:Mongoose- Modeling Relationships between Connected Data
-Monday:Authentication and Authorization
-Tuesday: Building RESTful API's Using Express
-Wednesday: Express- Advanced Topics & Asynchronous JavaScript
-Thursday: CRUD Operations Using Mongoose & Mongo - Data Validation 

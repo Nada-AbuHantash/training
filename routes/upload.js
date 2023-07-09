@@ -5,18 +5,20 @@ const path = require('path');
 const router = express.Router();
 
 let msg = {
+
   text: ''
+  
 };
 
 router.get('/', async (_, resp) => {
-  msg.text = '';
 
+  msg.text = '';
   resp.render('upload', { msg });
+
 });
 
 
-router.post('/', upload.single('file'), async (req, res, resp) => {
-
+router.post('/',  upload.single('file'), async (req, res, resp) => {
 
   if (!req.file) {
     msg.text = 'No file uploaded';
@@ -37,9 +39,8 @@ router.post('/', upload.single('file'), async (req, res, resp) => {
     return res.render('upload', { msg });
    
   }
-
+ 
   const { filename, mimetype, size } = req.file;
-
   uniqueName = filename;
   
   const filePath = path.join('C:\\Users\\anas1\\vscode-nodejs\\Task#1\\uploads', filename);
@@ -55,11 +56,6 @@ router.post('/', upload.single('file'), async (req, res, resp) => {
   await file.save();
 
   msg.text = 'File uploaded successfully';
-
-
-
-  // res.status(200).send('File uploaded successfully');
-
   res.render('upload', { msg });
 });
 
