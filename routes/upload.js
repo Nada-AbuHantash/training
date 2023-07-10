@@ -1,4 +1,5 @@
 const { File } = require('../models/files');
+const { User} = require('../models/users');
 const upload = require('../middleware/upload');
 const validation = require('../middleware/validation');
 const express = require('express');
@@ -22,6 +23,7 @@ router.post('/', [upload.single('file'),validation] , async (req, res, resp) => 
   const filePath = path.join('C:\\Users\\anas1\\vscode-nodejs\\Task#1\\uploads', filename);
 
   const file = new File({
+    email: req.session.useremail,
     originalname: req.file.originalname,
     uniqueName: uniqueName,
     filePath: filePath,
@@ -32,7 +34,7 @@ router.post('/', [upload.single('file'),validation] , async (req, res, resp) => 
   await file.save();
 
   msg.text = 'File uploaded successfully';
-  res.render('upload', { msg });
+ return res.render('upload', { msg });
   
 });
 

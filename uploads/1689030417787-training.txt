@@ -1,0 +1,5 @@
+sunday:Mongoose- Handling and Logging Errors
+Monday:Unit Testing &Integration Testing 
+Tuesday: Test-Driven Development & Deployment
+Wednesday:  front-end web + task1
+Thursday:  task 1

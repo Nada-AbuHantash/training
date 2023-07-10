@@ -18,10 +18,10 @@ router.get('/', async (req, resp) => {
 
 
 router.get('/:filename', async (req, res) => {
-
     const originalname = req.query.filename;
 
-    const file = await File.findOne({ originalname: { $regex: String(originalname) } });
+    const file = await File.findOne({ originalname: { $regex: String(originalname) } })
+    .and({  email:req.session.useremail });
     if (!file) {
 
         msg.text = 'File not found';
@@ -49,7 +49,8 @@ router.get('/:filename', async (req, res) => {
 router.get('/delete/:filname', async (req, res) => {
     const originalname = req.query.filename;
 
-    const file = await File.findOneAndDelete({ originalname: { $regex: String(originalname) } });
+    const file = await File.findOneAndDelete({ originalname: { $regex: String(originalname) } })
+    .and({  email:req.session.useremail });
     if (!file) {
 
         msg = { text: 'File not found ' };

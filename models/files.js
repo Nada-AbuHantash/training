@@ -1,8 +1,13 @@
-const Joi = require('joi');
 const mongoose = require('mongoose');
-// const multer = require('multer');
 
 const fileSchema = new mongoose.Schema({
+
+    email: {
+        type: String,
+        minlength: 5,
+        maxlength: 255,
+        required: true
+    },
     originalname: {
         type: String,
         required: true,
@@ -11,6 +16,7 @@ const fileSchema = new mongoose.Schema({
     },
     uniqueName: {
         type: String,
+        unique: true,
         required: true,
         minlength: 5,
         maxlength: 255,
@@ -18,7 +24,7 @@ const fileSchema = new mongoose.Schema({
     filePath: {
         type: String,
         required: true
-      },
+    },
     mimetype: {
         type: String,
         required: true,
@@ -35,7 +41,5 @@ const fileSchema = new mongoose.Schema({
 });
 
 const File = mongoose.model('File', fileSchema);
-
-
 
 exports.File = File;
