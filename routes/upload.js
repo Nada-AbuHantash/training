@@ -1,45 +1,21 @@
 const { File } = require('../models/files');
 const upload = require('../middleware/upload');
+const validation = require('../middleware/validation');
 const express = require('express');
 const path = require('path');
 const router = express.Router();
 
-let msg = {
 
-  text: ''
-  
-};
+let msg = { text: ''};
 
 router.get('/', async (_, resp) => {
-
   msg.text = '';
   resp.render('upload', { msg });
-
 });
 
 
-router.post('/',  upload.single('file'), async (req, res, resp) => {
+router.post('/', [upload.single('file'),validation] , async (req, res, resp) => {
 
-  if (!req.file) {
-    msg.text = 'No file uploaded';
-
-    return res.render('upload', { msg });
-
-  }
-
-  if (req.file.size > 500000) {
-    msg.text = 'File size exceeds the limit';
-
-    return res.render('upload', { msg });
-    
-  }
-  if (!req.file.mimetype.startsWith('text/') && req.file.mimetype !== 'application/pdf') {
-    msg.text = 'Invalid file type';
-
-    return res.render('upload', { msg });
-   
-  }
- 
   const { filename, mimetype, size } = req.file;
   uniqueName = filename;
   
@@ -57,6 +33,7 @@ router.post('/',  upload.single('file'), async (req, res, resp) => {
 
   msg.text = 'File uploaded successfully';
   res.render('upload', { msg });
+  
 });
 
 
