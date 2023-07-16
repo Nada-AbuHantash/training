@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 
 
 module.exports = function (app) {
-    // app.use(express.json());
+    app.use(express.json());
     app.use(sessions);
     app.use(bodyParser.urlencoded({ extended: true }));
     app.set("view engine", "ejs");

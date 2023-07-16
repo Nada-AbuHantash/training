@@ -1,44 +1,30 @@
-const _ = require('lodash');
+const Joi = require('joi');
 const brcypt = require('bcrypt');
 const { User, validate } = require('../models/users');
 const express = require('express');
 const router = express.Router();
 
-let msg = { text: '' };
-
-router.get('/', async (_, resp) => {
-    msg.text = '';
-    resp.render('login', { msg });
-});
-
 
 router.post('/', async (req, res, resp) => {
-
-    req.session.useremail = req.body.email;
+ 
+   
+    const { error } = validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
 
     
     let user = await User.findOne({ email: req.body.email })
-    if (!user) {
-
-        msg.text = 'invalied email';
-        return res.render('login', { msg });
-    }
+    if (!user) return res.status(400).send('the email already exite');
 
 
     const isValid = await brcypt.compare(req.body.password, user.password);
-    if (!isValid) {
+    if (!isValid) return res.status(400).send('invalied email or password');
 
-        msg.text = 'invalied  password';
-        return res.render('login', { msg });
-    }
-
-    return res.render('home');
-
-});
-router.get('/home', async (req, resp) => {
-
-    resp.render('home');
+    req.session.useremail = req.body.email;
+    
+    const token = user.generateAuthToken();
+    res.header('x-auth-token',token).send(token); 
 
 });
+
 
 module.exports = router;

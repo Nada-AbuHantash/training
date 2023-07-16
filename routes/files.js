@@ -1,72 +1,46 @@
 const { File } = require('../models/files');
 const express = require('express');
 const fs = require('fs');
-
-
+const auth = require('../middleware/auth');
 const router = express.Router();
-let msg = {
-
-    text: '',
-};
-
-router.get('/', async (req, resp) => {
-
-    msg.text = '';
-    return resp.render('search', { msg });
-
-});
 
 
-router.get('/:filename', async (req, res) => {
-    const originalname = req.query.filename;
+
+router.get('/:filename',auth, async (req, res) => {
+    const originalname = req.params.filename;
 
     const file = await File.findOne({ originalname: { $regex: String(originalname) } })
-    .and({  email:req.session.useremail });
-    if (!file) {
+    .and({ email:req.session.useremail });
 
-        msg.text = 'File not found';
-        return res.render('search', { msg });
-    }
+    if (!file)  return res.status(404).send("File not found");
+    
     const pathfiles = 'C:\\Users\\anas1\\vscode-nodejs\\Task#1\\uploads';
 
     fs.readdir(pathfiles, (err, files) => {
-        if (err) {
-            msg.text = `Error reading directory: ${err}`;
-            return res.render('search', { msg });
-        }
+        if (err)  return res.status(500).send(`Error reading directory: ${err}`);
 
         files.forEach((files) => {
             if (files.includes(file.uniqueName)) {
-
-                msg.text = `this is the path ${file.filePath}`;
-                return res.render('search', { msg });
+                return res.status(200).send(`this is the path ${file.filePath}`);
             }
         });
     })
 
 });
 
-router.get('/delete/:filname', async (req, res) => {
-    const originalname = req.query.filename;
+router.delete('/:filename',auth,async (req, res) => {
+
+    const originalname = req.params.filename;
 
     const file = await File.findOneAndDelete({ originalname: { $regex: String(originalname) } })
     .and({  email:req.session.useremail });
-    if (!file) {
 
-        msg = { text: 'File not found ' };
-        return res.render('search', { msg });
+    if (!file)  return res.status(404).send("File not found");
 
-    }
     fs.unlink(file.filePath, (err) => {
-        if (err) {
+        if (err)  return res.status(500).send(`Error reading directory: ${err}`);
 
-            msg = { text: `Error deleting file: ${err}` };
-            return res.render('search', { msg });
-        }
-
-        msg = { text: 'File deleted successfully' };
-        return res.render('search', { msg });
-
+       return res.status(200).send("File deleted successfully");
     });
 
 });
